@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="panel panel-primary" style="padding:10px">
+    <div class="inner cover">
+        <div class="container main">
+            <div class="row" style="background-color:white">
+                <div class="col-xs-12 bg-none">
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade in active" id="mapRight">
+                            <div class="row row-map">
+                                <div class="col-xs-12 col-sm-4">
+                                    <div class="panel panel-primary">
+                                        <div class="panel-heading">Countries</div>
+                                        <div class="panel-body">
+                                            <select id="country" style="width:100%" onchange="getCountryInfo()" disabled="disabled"></select>
+                                            <br /><br />
+                                            <span class="label label-default" id="infoContinent"></span>
+                                            <span class="label label-default" id="infoSize"></span>
+                                            <span class="label label-default" id="infoPopulation"></span>
+                                            <span class="label label-default" id="infoCurrency"></span>
+                                            <br /><br />
+                                            <div class="col-xs-12" id="countrySummary"></div>
+                                        </div>
+                                    </div>
+                                    <a class="btn btn-info btn-lg" id="locBut" href="#" style="display:none" onclick="getLocationInfo()" role="button">Show me the cities!</a>
+                                    <br />
+                                    <div id="citiesPanel" class="panel panel-success" style="display:none">
+                                        <div class="panel-heading">Cities</div>
+                                        <div class="panel-body">
+                                            <select id="locations" style="width:100%" onchange="getLocationDetails();"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-8 no-col-padding">
+                                    <div id="map" class="mapBox">
+                                        <div id="map-canvas"></div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-xs-12" id="countrySummary"></div>
+                                        <div class="col-xs-12" id="locationSummary"></div><br />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="hiddenFields" style="display:none">
+                <input id="countryNorth" value="" />
+                <input id="countrySouth" value="" />
+                <input id="countryEast" value="" />
+                <input id="countryWest" value="" />
+                <input id="infoArea" value="" />
+                <input id="infoPopulation" value="" />
+                <input id="infoCurrencycode" value="" />
+                <input id="RefgeonameId" value="" />
+            </div>
+            <div class="mastfoot">
+                <div class="inner">
+                    <div id="fullCountry"></div>
+                    <div id="fullLocation"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    $(document).ready(function () {
+
+        google.maps.event.addDomListener(window, 'load', initialize);
+
+
+        $(function () {
+            twlGeo.defaultData.userName = 'nwesterman';
+
+            $("#country").twlCountrySelect({
+                callback: function () {
+                    $("#country").removeAttr('disabled');
+                    getLocationInfo();
+                }
+            });
+        })
+    })
+
+    $('#country').click(function () {
+        $("#locations").html("");
+    });
+
+    $('#locBut').click(function () {
+        $("#locations").twlLocationSelect({
+            northInput: $("#countryNorth").val(),
+            southInput: $("#countrySouth").val(),
+            eastInput: $("#countryEast").val(),
+            westInput: $("#countryWest").val(),
+            callback: function () {
+                $("#locations").removeAttr('disabled');
+            }
+        })
+    }
+   )
+</script>
